@@ -1,142 +1,382 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
+/* App Layout */
+.app {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
+  height: 100vh;
   background-color: var(--background);
 }
 
-.main {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
+/* Header */
+.header {
   background-color: var(--foreground);
-  padding: 120px 60px;
+  border-bottom: 1px solid var(--button-secondary-border);
+  padding: 16px;
 }
 
-.intro {
+.headerContent {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
+.appName {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.headerButtons {
+  display: flex;
+  gap: 8px;
 }
 
-/* Enable hover only on non-touch devices */
+/* Tab Navigation */
+.sectionChooser {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.bottomNav {
+  display: flex;
+  gap: 8px;
+  background-color: var(--foreground);
+  border-top: 1px solid var(--button-secondary-border);
+  padding: 10px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  background-color: var(--background);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 12px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tab:hover,
+.tab:focus-visible {
+  background-color: var(--button-secondary-hover);
+  color: var(--text-primary);
+}
+
+.tab:active {
+  transform: scale(0.98);
+}
+
+.tab.active {
+  color: var(--text-primary);
+  background-color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--background);
+  padding-bottom: 92px;
+}
+
+/* Content Area */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+.placeholder {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Planner View */
+.plannerContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+}
+
+.toggleTile {
+  background-color: var(--foreground);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.toggleContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggleLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.toggleButton {
+  padding: 8px 16px;
+  border: 1px solid var(--button-secondary-border);
+  background-color: var(--background);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.toggleButton.active {
+  background-color: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+}
+
+.toggleButton:active {
+  transform: scale(0.95);
+}
+
+.timeoutWarning {
+  margin: 12px 0 0 0;
+  padding: 12px;
+  background-color: var(--background);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-left: 3px solid var(--accent-blue);
+}
+
+.plannerHint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 0 4px;
+}
+
+.dayTilesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dayTile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--foreground);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.dayTile:active {
+  background-color: var(--button-secondary-hover);
+  transform: scale(0.98);
+}
+
 @media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
+  .dayTile:hover {
+    background-color: var(--button-secondary-hover);
+    border-color: var(--accent-blue);
   }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
+.dayTileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
 
-  .intro {
-    gap: 16px;
-  }
+.dayHeader {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
+.dayName {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.dayDate {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.dayStatus {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.dayTileArrow {
+  color: var(--text-secondary);
+  font-size: 20px;
+  margin-left: 12px;
+  font-weight: 300;
+}
+
+/* Accordion Styles */
+.accordion {
+  width: 100%;
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.accordionItem {
+  border-bottom: 1px solid var(--button-secondary-border);
+}
+
+.accordionItem:last-child {
+  border-bottom: none;
+}
+
+.accordionButton {
+  width: 100%;
+  padding: 16px;
+  background: var(--foreground);
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.accordionButton:active {
+  background-color: var(--button-secondary-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accordionButton:hover {
+    background-color: var(--button-secondary-hover);
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
+.accordionIcon {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+.accordionContent {
+  padding: 16px;
+  background-color: var(--background);
+  color: var(--text-secondary);
+  border-top: 1px solid var(--button-secondary-border);
+  font-size: 14px;
+  line-height: 1.6;
+}
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+/* Settings View */
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 24px;
+}
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+.settingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settingTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--foreground);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.settingItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.settingLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.settingDescription {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Toggle Switch */
+.toggleSwitch {
+  width: 52px;
+  height: 32px;
+  border: 2px solid var(--button-secondary-border);
+  border-radius: 16px;
+  background-color: var(--button-secondary-hover);
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+}
+
+.toggleSwitch.on {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
+.toggleSwitchCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--foreground);
+  position: absolute;
+  left: 3px;
+  transition: left 0.3s;
+}
+
+.toggleSwitch.on .toggleSwitchCircle {
+  left: 21px;
 }

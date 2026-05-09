@@ -1,13 +1,49 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f5f5;
+  --foreground: #fff;
+  --text-primary: #000;
+  --text-secondary: #666;
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  --button-secondary-border: #e0e0e0;
+  --accent-blue: #0066cc;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #121212;
+    --foreground: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #999;
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #2a2a2a;
+    --button-secondary-border: #333;
+    --accent-blue: #0066cc;
   }
+}
+
+html[data-theme="dark"] {
+  --background: #121212;
+  --foreground: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #999;
+  --button-primary-hover: #ccc;
+  --button-secondary-hover: #2a2a2a;
+  --button-secondary-border: #333;
+  --accent-blue: #0066cc;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  --background: #f5f5f5;
+  --foreground: #fff;
+  --text-primary: #000;
+  --text-secondary: #666;
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  --button-secondary-border: #e0e0e0;
+  --accent-blue: #0066cc;
+  color-scheme: light;
 }
 
 html {
@@ -20,13 +56,18 @@ body {
   overflow-x: hidden;
 }
 
+html,
+body,
+#__next {
+  height: 100%;
+}
+
 body {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
+  color: var(--text-primary);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
