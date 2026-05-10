@@ -372,8 +372,19 @@
   transition: left 0.3s;
 }
 
-.toggleSwitch.on .toggleSwitchCircle {
-  left: 21px;
+.toggleButton.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.noPeopleMessage {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 16px;
+  background-color: var(--background);
+  border-radius: 8px;
+  margin: 8px 0;
 }
 
 /* Today Section */
