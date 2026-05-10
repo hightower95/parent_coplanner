@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import BottomNav from './components/BottomNav';
 import Planner from './components/Planner';
+import Activity from './components/Activity';
 import Settings from './components/Settings';
 
 type View = 'planner' | 'activity' | 'settings';
@@ -24,36 +26,11 @@ export default function Home() {
 
       <main className={styles.content}>
         {activeView === 'planner' && <Planner />}
-        {activeView === 'activity' && <div className={styles.placeholder}>Activity view coming soon</div>}
+        {activeView === 'activity' && <Activity />}
         {activeView === 'settings' && <Settings />}
       </main>
 
-      <nav className={styles.bottomNav} role="tablist" aria-label="Main views">
-        <button
-          role="tab"
-          aria-selected={activeView === 'planner'}
-          className={`${styles.tab} ${activeView === 'planner' ? styles.active : ''}`}
-          onClick={() => setActiveView('planner')}
-        >
-          Planner
-        </button>
-        <button
-          role="tab"
-          aria-selected={activeView === 'activity'}
-          className={`${styles.tab} ${activeView === 'activity' ? styles.active : ''}`}
-          onClick={() => setActiveView('activity')}
-        >
-          Activity
-        </button>
-        <button
-          role="tab"
-          aria-selected={activeView === 'settings'}
-          className={`${styles.tab} ${activeView === 'settings' ? styles.active : ''}`}
-          onClick={() => setActiveView('settings')}
-        >
-          Settings
-        </button>
-      </nav>
+      <BottomNav activeView={activeView} setActiveView={setActiveView} />
     </div>
   );
 }

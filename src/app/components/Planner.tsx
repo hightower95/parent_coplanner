@@ -24,22 +24,6 @@ export default function Planner() {
 
   return (
     <div className={styles.plannerContainer}>
-      {/* Looking for something tile */}
-      <div className={styles.toggleTile}>
-        <div className={styles.toggleContent}>
-          <span className={styles.toggleLabel}>Looking for something to do?</span>
-          <button
-            className={`${styles.toggleButton} ${isLookingForSomething ? styles.active : ''}`}
-            onClick={() => setIsLookingForSomething(!isLookingForSomething)}
-          >
-            {isLookingForSomething ? 'Active' : 'Activate'}
-          </button>
-        </div>
-        {isLookingForSomething && (
-          <p className={styles.timeoutWarning}>⏱️ This will timeout after 30 minutes</p>
-        )}
-      </div>
-
       <p className={styles.plannerHint}>Tap any day to see what's happening</p>
       <div className={styles.dayTilesList}>
         {days.map((day, index) => (
