@@ -408,6 +408,14 @@
   gap: 8px;
 }
 
+.peopleListHint {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
 .personTile {
   background-color: var(--foreground);
   border: 1px solid var(--button-secondary-border);
@@ -441,4 +449,156 @@
   font-size: 12px;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+/* Edit Name Button */
+.editNameButton {
+  padding: 8px 12px;
+  background-color: var(--foreground);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editNameButton:hover {
+  background-color: var(--button-secondary-hover);
+  border-color: var(--accent-blue);
+}
+
+.editNameButton:active {
+  transform: scale(0.95);
+}
+
+/* Dialog Styles */
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialogContent {
+  background-color: var(--foreground);
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dialogInput {
+  padding: 12px;
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--text-primary);
+  background-color: var(--background);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.dialogInput:focus {
+  border-color: var(--accent-blue);
+}
+
+.dialogButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.dialogButtonSecondary {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--button-secondary-border);
+  background-color: var(--background);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dialogButtonSecondary:active {
+  background-color: var(--button-secondary-hover);
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dialogButtonSecondary:hover {
+    background-color: var(--button-secondary-hover);
+  }
+}
+
+.dialogButtonPrimary {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background-color: var(--accent-blue);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dialogButtonPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dialogButtonPrimary:not(:disabled):active {
+  background-color: #0066cc;
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dialogButtonPrimary:not(:disabled):hover {
+    background-color: #0066cc;
+  }
 }

@@ -9,17 +9,18 @@ interface Person {
   groups: string[];
 }
 
-export default function Activity() {
+interface ActivityProps {
+  currentUser: {
+    id: string;
+    name: string;
+    groups: string[];
+  };
+}
+
+export default function Activity({ currentUser }: ActivityProps) {
   const [isLookingForSomething, setIsLookingForSomething] = useState(false);
   const [activeUsers, setActiveUsers] = useState<ActiveUser[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Mock user data - in a real app, this would come from authentication
-  const currentUser = {
-    id: 'user-123', // This should be a unique ID from your auth system
-    name: 'Peter Johnson',
-    groups: ['Book Club', 'Hiking Group']
-  };
 
   // Fetch active users
   const fetchActiveUsers = async () => {
@@ -69,18 +70,18 @@ export default function Activity() {
 
     const interval = setInterval(async () => {
       if (isLookingForSomething) {
-        // Update last seen timestamp
+        // Update last seen timestamp only if active
         await activeUsersApi.updateLastSeen(currentUser.id);
       }
-      // Refresh the active users list
+      // Always refresh the active users list
       await fetchActiveUsers();
     }, 30000); // Every 30 seconds
 
     return () => clearInterval(interval);
-  }, [isLookingForSomething]);
+  }, [isLookingForSomething, currentUser.id]);
 
   // Convert ActiveUser to Person format for display
-  const peopleLooking: Person[] = activeUsers.map(user => ({
+  const peopleLooking: Person[] = activeUsers.map((user: ActiveUser) => ({
     name: user.name,
     groups: user.groups
   }));
@@ -108,13 +109,16 @@ export default function Activity() {
           )}
         </div>
 
-        {/* List of people looking for something to do */}
-        {isLookingForSomething && (
-          <div className={styles.peopleList}>
-            {peopleLooking.length === 0 ? (
-              <p className={styles.noPeopleMessage}>No one else is looking for activities right now.</p>
-            ) : (
-              peopleLooking.map((person, index) => (
+        {/* List of people looking for something to do - always visible */}
+        <div className={styles.peopleList}>
+          {peopleLooking.length === 0 ? (
+            <p className={styles.noPeopleMessage}>No one is looking for activities right now.</p>
+          ) : (
+            <>
+              <p className={styles.peopleListHint}>
+                {peopleLooking.length} {peopleLooking.length === 1 ? 'person is' : 'people are'} looking for something to do
+              </p>
+              {peopleLooking.map((person, index) => (
                 <div key={index} className={styles.personTile}>
                   <div className={styles.personContent}>
                     <span className={styles.personName}>{person.name}</span>
@@ -125,10 +129,10 @@ export default function Activity() {
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-        )}
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
