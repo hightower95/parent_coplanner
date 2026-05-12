@@ -1,9 +1,54 @@
 import { useEffect, useState } from 'react'
+import { usersApi } from '../lib/supabase'
 
 interface UserData {
   id: string
   name: string
   groups: string[]
+  registered: boolean
+  developerMode: boolean
+  developDatabase: boolean
+}
+
+const USER_DATA_KEY = 'user_data'
+const USER_ID_KEY = 'user_id'
+const USER_FP_KEY = 'user_fingerprint'
+
+function getStoredUserId(): string {
+  let storedId = localStorage.getItem(USER_ID_KEY)
+  if (storedId) {
+    return storedId
+  }
+
+  const generatedId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : 'user-' + Math.random().toString(36).substr(2, 9)
+
+  const id = `user-${generatedId}`
+  localStorage.setItem(USER_ID_KEY, id)
+  return id
+}
+
+function getUserFingerprint(): string {
+  const storedFingerprint = localStorage.getItem(USER_FP_KEY)
+  if (storedFingerprint) {
+    return storedFingerprint
+  }
+
+  const fingerprintParts = [
+    navigator.userAgent,
+    navigator.language,
+    navigator.platform,
+    screen.width,
+    screen.height,
+    screen.colorDepth,
+    new Date().getTimezoneOffset()
+  ]
+
+  const raw = fingerprintParts.join('|')
+  const fingerprint = btoa(unescape(encodeURIComponent(raw))).replace(/=+$/, '')
+  localStorage.setItem(USER_FP_KEY, fingerprint)
+  return fingerprint
 }
 
 const DEFAULT_USER_ID = 'user-' + Math.random().toString(36).substr(2, 9)
@@ -12,7 +57,7 @@ const DEFAULT_USER_ID = 'user-' + Math.random().toString(36).substr(2, 9)
 function generateUserNameGuess(): string {
   // Check if running as PWA
   const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as any).standalone === true
+    (window.navigator as { standalone?: boolean }).standalone === true
 
   // Try to extract device info from user agent
   const userAgent = navigator.userAgent
@@ -47,44 +92,99 @@ export function useUser() {
   const [user, setUser] = useState<UserData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Load user from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('user_data')
-    if (stored) {
-      try {
-        setUser(JSON.parse(stored))
-      } catch (error) {
-        console.error('Failed to parse stored user data:', error)
-        setUser({
-          id: DEFAULT_USER_ID,
-          name: generateUserNameGuess(),
-          groups: []
-        })
-      }
-    } else {
-      // First time - generate a guess
-      setUser({
-        id: DEFAULT_USER_ID,
-        name: generateUserNameGuess(),
-        groups: []
-      })
-    }
-    setIsLoading(false)
-  }, [])
+  const saveUserLocally = (updated: UserData) => {
+    setUser(updated)
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(updated))
+  }
 
-  const updateUserName = (newName: string) => {
-    if (user) {
-      const updated = { ...user, name: newName }
-      setUser(updated)
-      localStorage.setItem('user_data', JSON.stringify(updated))
+  const saveUserToDatabase = async (updated: UserData) => {
+    try {
+      await usersApi.upsertUser(updated.id, updated.name, updated.groups)
+    } catch (error) {
+      console.error('Failed to save user to database:', error)
     }
   }
 
-  const updateUserGroups = (groups: string[]) => {
+  // Load user from localStorage and database on mount
+  useEffect(() => {
+    async function initializeUser() {
+      const userId = getStoredUserId()
+      getUserFingerprint()
+
+      const stored = localStorage.getItem(USER_DATA_KEY)
+      let localUser: UserData | null = null
+      if (stored) {
+        try {
+          localUser = JSON.parse(stored)
+        } catch (error) {
+          console.error('Failed to parse stored user data:', error)
+        }
+      }
+
+      const dbUser = await usersApi.getUserById(userId)
+      if (dbUser) {
+        saveUserLocally({
+          id: userId,
+          name: dbUser.name || localUser?.name || generateUserNameGuess(),
+          groups: dbUser.groups || localUser?.groups || [],
+          registered: true,
+          developerMode: localUser?.developerMode ?? false,
+          developDatabase: localUser?.developDatabase ?? false
+        })
+      } else {
+        const baseUser = localUser || {
+          id: userId,
+          name: generateUserNameGuess(),
+          groups: [],
+          registered: false,
+          developerMode: false,
+          developDatabase: false
+        }
+
+        saveUserLocally({
+          ...baseUser,
+          id: userId,
+          name: baseUser.name || generateUserNameGuess(),
+          groups: baseUser.groups || [],
+          registered: baseUser.registered ?? false,
+          developerMode: baseUser.developerMode ?? false,
+          developDatabase: baseUser.developDatabase ?? false
+        })
+      }
+
+      setIsLoading(false)
+    }
+
+    initializeUser()
+  }, [])
+
+  const updateUserName = async (newName: string) => {
+    if (user) {
+      const updated = { ...user, name: newName, registered: true }
+      saveUserLocally(updated)
+      await saveUserToDatabase(updated)
+    }
+  }
+
+  const updateUserGroups = async (groups: string[]) => {
     if (user) {
       const updated = { ...user, groups }
-      setUser(updated)
-      localStorage.setItem('user_data', JSON.stringify(updated))
+      saveUserLocally(updated)
+      await saveUserToDatabase(updated)
+    }
+  }
+
+  const toggleDeveloperMode = () => {
+    if (user) {
+      const updated = { ...user, developerMode: !user.developerMode }
+      saveUserLocally(updated)
+    }
+  }
+
+  const toggleDevelopDatabase = () => {
+    if (user) {
+      const updated = { ...user, developDatabase: !user.developDatabase }
+      saveUserLocally(updated)
     }
   }
 
@@ -92,6 +192,8 @@ export function useUser() {
     user,
     isLoading,
     updateUserName,
-    updateUserGroups
+    updateUserGroups,
+    toggleDeveloperMode,
+    toggleDevelopDatabase
   }
 }

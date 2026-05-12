@@ -372,6 +372,89 @@
   transition: left 0.3s;
 }
 
+.toggleSwitch.on .toggleSwitchCircle {
+  left: 23px;
+}
+
+/* Name Editing */
+.nameEditContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.nameEditInput {
+  padding: 12px;
+  border: 2px solid var(--button-secondary-border);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--background);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.nameEditInput:focus {
+  border-color: var(--accent-blue);
+}
+
+.nameEditButtons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.nameEditButton {
+  padding: 8px 16px;
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nameEditButton:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+.nameEditButtonPrimary {
+  padding: 8px 16px;
+  background-color: var(--accent-blue);
+  color: white;
+  border: 1px solid var(--accent-blue);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nameEditButtonPrimary:hover:not(:disabled) {
+  background-color: #0066cc;
+}
+
+.nameEditButtonPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editNameButton {
+  padding: 6px 12px;
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editNameButton:hover {
+  background-color: var(--button-secondary-hover);
+}
+
 .toggleButton.loading {
   opacity: 0.7;
   cursor: not-allowed;
@@ -385,6 +468,13 @@
   background-color: var(--background);
   border-radius: 8px;
   margin: 8px 0;
+}
+
+.loadingMessage {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+  padding: 32px 16px;
 }
 
 /* Today Section */
@@ -601,4 +691,74 @@
   .dialogButtonPrimary:not(:disabled):hover {
     background-color: #0066cc;
   }
+}
+
+/* Registration Screen */
+.registrationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--background);
+  padding: 20px;
+}
+
+.registrationContent {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.registrationTitle {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.registrationSubtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0 0 32px 0;
+}
+
+.registrationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.registrationInput {
+  padding: 16px;
+  border: 2px solid var(--button-secondary-border);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--foreground);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.registrationInput:focus {
+  border-color: var(--button-primary-bg);
+}
+
+.registrationButton {
+  padding: 16px;
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.registrationButton:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.registrationButton:active {
+  transform: scale(0.98);
 }
